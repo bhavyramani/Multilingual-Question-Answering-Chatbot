@@ -1,4 +1,5 @@
 'use client'
+import { set } from "mongoose";
 import { useEffect, useRef, useState, memo } from "react";
 
 const Message = memo(({ msg, lastMessageRef }) => {
@@ -49,17 +50,25 @@ export default function Home() {
     setMessages(prevMessages => [...prevMessages, { role: "user", message }]);
     if (context == null) {
       setContext(message);
-      setMessages(prevMessages => [...prevMessages, { role: "bot", message: "Context update successfully. Now you can start asking questions" }]);
-    } else {
-      const response = await fetch("/api/message", {
-        method: "POST",
+      const response = await fetch('/api/message', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ question: message, context }),
+        body: JSON.stringify({ question: message, context: message }),
       });
       const json = await response.json();
-      console.log(json);
+      json.answer = "Context has been set successfully. Now you can ask questions.";
+      setMessages(prevMessages => [...prevMessages, { role: "bot", message: json.answer }]);
+    } else {
+      const response = await fetch('/api/message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ question: message, context: context }),
+      });
+      const json = await response.json();
       setMessages(prevMessages => [...prevMessages, { role: "bot", message: json.answer }]);
     }
     setSent(false);
