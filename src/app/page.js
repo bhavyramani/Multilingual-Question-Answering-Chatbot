@@ -1,5 +1,4 @@
 'use client'
-import { set } from "mongoose";
 import { useEffect, useRef, useState, memo } from "react";
 
 const Message = memo(({ msg, lastMessageRef }) => {
@@ -24,6 +23,7 @@ const Message = memo(({ msg, lastMessageRef }) => {
     </div>
   );
 });
+Message.displayName = 'Message';
 
 
 const Messages = memo(({ messages, lastMessageRef }) => {
@@ -35,6 +35,7 @@ const Messages = memo(({ messages, lastMessageRef }) => {
     </div>
   );
 });
+Messages.displayName = 'Messages';
 
 export default function Home() {
   const [message, setMessage] = useState("");
