@@ -46,7 +46,7 @@ export default function Home() {
   const lastMessageRef = useRef(null);
 
   const sendMessage = async () => {
-    if(message == '') return;
+    if(message == '' || sent) return;
     setMessage("");
     setSent(true);
     setMessages(prevMessages => [...prevMessages, { role: "user", message }]);
@@ -107,7 +107,6 @@ export default function Home() {
           <div className="flex w-full max-w-4xl gap-2 items-center">
             <input
               ref={inputRef}
-              disabled={sent}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
               value={message}
